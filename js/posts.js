@@ -91,9 +91,5 @@ export async function fetchFeaturedPosts() {
   const snap = await getDocs(q);
   return snap.docs
     .map((d) => ({ id: d.id, ...d.data() }))
-    .sort((a, b) => {
-      const ta = a.createdAt?.toMillis?.() ?? 0;
-      const tb = b.createdAt?.toMillis?.() ?? 0;
-      return tb - ta;
-    });
+    .sort((a, b) => (b.createdAt?.toMillis() ?? 0) - (a.createdAt?.toMillis() ?? 0));
 }
