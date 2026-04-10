@@ -1,0 +1,777 @@
+/* ============================================================
+   SCRAPBOOK — styles.css
+   Mobile-first, warm nostalgic feel
+   ============================================================ */
+
+/* ?? Reset & tokens ??????????????????????????????????????? */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+  --bg:          #faf9f6;
+  --bg-card:     #ffffff;
+  --bg-subtle:   #f3f1ec;
+  --purple:      #534AB7;
+  --purple-light:#ebe9f8;
+  --purple-dark: #3d3589;
+  --accent:      #f0a500;
+  --accent-light:#fff4d6;
+  --text:        #1a1a2e;
+  --text-muted:  #6b6878;
+  --border:      #e4e1da;
+  --sepia:       #c8a97e;
+  --cool:        #7eb5c8;
+  --red:         #e05252;
+  --shadow-sm:   0 1px 3px rgba(0,0,0,.08);
+  --shadow-md:   0 4px 16px rgba(0,0,0,.10);
+  --shadow-lg:   0 8px 32px rgba(0,0,0,.14);
+  --radius:      14px;
+  --radius-sm:   8px;
+  --font-ui:     'Outfit', 'Inter', sans-serif;
+  --font-hand:   'Caveat', cursive;
+  --transition:  160ms ease;
+}
+
+html { font-size: 16px; -webkit-text-size-adjust: 100%; }
+
+body {
+  font-family: var(--font-ui);
+  background: var(--bg);
+  color: var(--text);
+  min-height: 100dvh;
+  overflow-x: hidden;
+}
+
+img { display: block; max-width: 100%; }
+button { font-family: inherit; cursor: pointer; border: none; background: none; }
+input, textarea, select { font-family: inherit; }
+a { color: var(--purple); }
+
+/* ?? Utility ??????????????????????????????????????????????? */
+.sr-only {
+  position: absolute; width: 1px; height: 1px;
+  padding: 0; margin: -1px; overflow: hidden;
+  clip: rect(0,0,0,0); white-space: nowrap; border: 0;
+}
+
+/* ?? Buttons ??????????????????????????????????????????????? */
+.btn {
+  display: inline-flex; align-items: center; justify-content: center;
+  gap: .4em; padding: .6rem 1.25rem;
+  border-radius: 999px; font-size: .95rem; font-weight: 600;
+  transition: opacity var(--transition), transform var(--transition), background var(--transition);
+  white-space: nowrap;
+}
+.btn:active { transform: scale(.97); }
+.btn:disabled { opacity: .5; pointer-events: none; }
+
+.btn--primary {
+  background: var(--purple); color: #fff;
+}
+.btn--primary:hover { background: var(--purple-dark); }
+
+.btn--accent {
+  background: var(--accent); color: #fff;
+}
+.btn--accent:hover { background: #d49200; }
+
+.btn--ghost {
+  background: transparent; color: var(--purple); border: 1.5px solid var(--purple);
+}
+.btn--ghost:hover { background: var(--purple-light); }
+
+.btn--full { width: 100%; }
+
+/* ?? Spinner ??????????????????????????????????????????????? */
+.spinner {
+  display: inline-block; width: 2rem; height: 2rem;
+  border: 3px solid var(--border); border-top-color: var(--purple);
+  border-radius: 50%; animation: spin .7s linear infinite;
+}
+@keyframes spin { to { transform: rotate(360deg); } }
+
+/* ??????????????????????????????????????????????????????????
+   PASSWORD GATE
+   ?????????????????????????????????????????????????????????? */
+.gate {
+  position: fixed; inset: 0; z-index: 1000;
+  background: linear-gradient(135deg, #2d2660 0%, #534AB7 60%, #b06ad4 100%);
+  display: flex; align-items: center; justify-content: center;
+  padding: 1.5rem;
+}
+
+.gate__card {
+  position: relative;
+  background: var(--bg-card);
+  border-radius: var(--radius);
+  padding: 2.5rem 2rem 2rem;
+  width: 100%; max-width: 380px;
+  box-shadow: var(--shadow-lg);
+  text-align: center;
+  overflow: visible;
+}
+
+/* Washi tape decorations */
+.gate__tape {
+  position: absolute; top: -14px;
+  width: 64px; height: 28px;
+  background: rgba(240,165,0,.55);
+  border-radius: 3px;
+  transform-origin: center center;
+}
+.gate__tape--left  { left: 20%;  transform: rotate(-6deg); }
+.gate__tape--right { right: 20%; transform: rotate(5deg); }
+
+.gate__title {
+  font-family: var(--font-hand); font-size: 2.4rem;
+  color: var(--purple); margin-bottom: .5rem;
+}
+.gate__subtitle {
+  font-size: .9rem; color: var(--text-muted); margin-bottom: 1.5rem; line-height: 1.6;
+}
+.gate__form { display: flex; flex-direction: column; gap: .75rem; }
+.gate__input {
+  width: 100%; padding: .7rem 1rem; border: 2px solid var(--border);
+  border-radius: var(--radius-sm); font-size: 1rem;
+  transition: border-color var(--transition);
+  outline: none;
+}
+.gate__input:focus { border-color: var(--purple); }
+.gate__btn { width: 100%; font-size: 1rem; padding: .75rem; }
+.gate__error {
+  min-height: 1.2em; font-size: .85rem; color: var(--red);
+  margin-top: .25rem;
+}
+
+/* ??????????????????????????????????????????????????????????
+   NAV
+   ?????????????????????????????????????????????????????????? */
+.nav {
+  display: flex; align-items: center; justify-content: space-between;
+  padding: .8rem 1.25rem;
+  background: var(--bg-card);
+  border-bottom: 1px solid var(--border);
+  position: sticky; top: 0; z-index: 100;
+  box-shadow: var(--shadow-sm);
+}
+.nav__logo {
+  font-family: var(--font-hand); font-size: 1.5rem; color: var(--purple); font-weight: 700;
+}
+.nav__cta { font-size: .9rem; padding: .5rem 1rem; }
+
+/* ??????????????????????????????????????????????????????????
+   HERO CAROUSEL
+   ?????????????????????????????????????????????????????????? */
+.hero {
+  background: linear-gradient(160deg, #2d2660 0%, var(--purple) 100%);
+  padding: 1.5rem 0 1.75rem;
+  overflow: hidden;
+}
+
+.carousel { position: relative; padding: 0 0 2.5rem; overflow: hidden; }
+
+.carousel__track {
+  display: flex; gap: 1rem;
+  padding: .5rem 1.25rem;
+  overflow-x: auto; scroll-snap-type: x mandatory;
+  scrollbar-width: none; -ms-overflow-style: none;
+  scroll-behavior: smooth;
+  -webkit-overflow-scrolling: touch;
+}
+.carousel__track::-webkit-scrollbar { display: none; }
+
+.carousel__slide {
+  flex: 0 0 calc(85vw); max-width: 340px;
+  scroll-snap-align: center;
+  list-style: none;
+}
+
+/* on desktop, show slightly smaller slides */
+@media (min-width: 640px) {
+  .carousel__slide { flex: 0 0 clamp(280px, 40vw, 360px); }
+}
+
+.carousel__arrow {
+  position: absolute; top: 50%; transform: translateY(calc(-50% - 1.25rem));
+  background: rgba(255,255,255,.2); color: #fff;
+  border: 1.5px solid rgba(255,255,255,.35);
+  border-radius: 50%; width: 2.25rem; height: 2.25rem;
+  font-size: 1rem; display: flex; align-items: center; justify-content: center;
+  transition: background var(--transition);
+  z-index: 2;
+}
+.carousel__arrow:hover { background: rgba(255,255,255,.35); }
+.carousel__arrow--prev { left: .5rem; }
+.carousel__arrow--next { right: .5rem; }
+
+.carousel__dots {
+  position: absolute; bottom: .5rem; left: 50%; transform: translateX(-50%);
+  display: flex; gap: .4rem; align-items: center;
+}
+.carousel__dot {
+  width: 6px; height: 6px; border-radius: 50%;
+  background: rgba(255,255,255,.4);
+  border: none;
+  transition: background var(--transition), transform var(--transition);
+  cursor: pointer;
+}
+.carousel__dot[aria-selected="true"] {
+  background: #fff; transform: scale(1.35);
+}
+
+.carousel__empty {
+  text-align: center; padding: 2rem 1rem;
+  color: rgba(255,255,255,.75); font-size: 1rem;
+}
+
+/* ??????????????????????????????????????????????????????????
+   FILTER TABS
+   ?????????????????????????????????????????????????????????? */
+.filters {
+  display: flex; gap: .5rem;
+  padding: .9rem 1.25rem;
+  overflow-x: auto; scrollbar-width: none; -ms-overflow-style: none;
+  border-bottom: 1px solid var(--border);
+  background: var(--bg-card);
+  position: sticky; top: 57px; z-index: 90;
+}
+.filters::-webkit-scrollbar { display: none; }
+
+.filter-btn {
+  flex: 0 0 auto;
+  padding: .4rem .9rem;
+  border-radius: 999px; font-size: .85rem; font-weight: 500;
+  color: var(--text-muted); background: var(--bg-subtle);
+  border: 1.5px solid transparent;
+  transition: all var(--transition); white-space: nowrap;
+}
+.filter-btn:hover { color: var(--purple); border-color: var(--purple-light); }
+.filter-btn--active {
+  background: var(--purple-light); color: var(--purple);
+  border-color: var(--purple);
+}
+
+/* ??????????????????????????????????????????????????????????
+   POSTS GRID
+   ?????????????????????????????????????????????????????????? */
+.grid {
+  padding: 1.25rem 1rem 5rem;
+  columns: 1; column-gap: 1rem;
+}
+@media (min-width: 540px)  { .grid { columns: 2; } }
+@media (min-width: 900px)  { .grid { columns: 3; max-width: 1100px; margin: 0 auto; } }
+@media (min-width: 1200px) { .grid { columns: 4; } }
+
+.grid__loader {
+  display: flex; align-items: center; justify-content: center;
+  padding: 3rem; column-span: all;
+}
+
+.empty-state {
+  text-align: center; padding: 4rem 1rem;
+  color: var(--text-muted); font-size: 1rem; line-height: 1.8;
+}
+
+.load-more-wrap {
+  display: flex; justify-content: center;
+  padding: 1rem 0 4rem; column-span: all;
+}
+
+/* ?? Load More sentinel / button ?????????????????????????? */
+#loadMoreBtn {
+  margin: 0 auto 2rem;
+  display: block;
+}
+
+/* ??????????????????????????????????????????????????????????
+   BASE CARD
+   ?????????????????????????????????????????????????????????? */
+.card {
+  break-inside: avoid;
+  display: inline-block; width: 100%;
+  margin-bottom: 1rem;
+  background: var(--bg-card);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow-md);
+  overflow: hidden;
+  position: relative;
+  transition: transform .2s ease, box-shadow .2s ease;
+}
+.card:hover {
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-lg);
+}
+
+.card__body  { padding: 1rem; }
+.card__footer {
+  padding: .6rem 1rem .8rem;
+  border-top: 1px solid var(--border);
+  display: flex; flex-wrap: wrap; gap: .4rem; align-items: center;
+}
+
+/* author + date line */
+.card__meta {
+  display: flex; align-items: center; gap: .4rem;
+  font-size: .78rem; color: var(--text-muted); margin-bottom: .5rem;
+}
+.card__avatar {
+  width: 1.5rem; height: 1.5rem; border-radius: 50%;
+  background: var(--purple-light); color: var(--purple);
+  display: flex; align-items: center; justify-content: center;
+  font-size: .75rem; font-weight: 700; flex-shrink: 0;
+}
+
+/* ??????????????????????????????????????????????????????????
+   POLAROID CARD (memory with photo)
+   ?????????????????????????????????????????????????????????? */
+.card--polaroid {
+  background: #fffef9;
+  padding: .7rem .7rem 0;
+  border: 1px solid #ede9df;
+}
+/* random rotation applied inline via JS */
+
+.card--polaroid .polaroid__img-wrap {
+  width: 100%; aspect-ratio: 4/3; overflow: hidden;
+  background: var(--bg-subtle);
+  cursor: pointer;
+}
+.card--polaroid .polaroid__img-wrap img {
+  width: 100%; height: 100%; object-fit: cover;
+  transition: transform .35s ease;
+}
+.card--polaroid .polaroid__img-wrap:hover img { transform: scale(1.04); }
+
+.card--polaroid .polaroid__caption {
+  font-family: var(--font-hand); font-size: 1.15rem; line-height: 1.4;
+  color: var(--text); padding: .6rem .2rem .2rem;
+  min-height: 2.2rem;
+}
+.card--polaroid .card__footer {
+  background: transparent; border-color: #ede9df; margin: 0 -.7rem; padding-left: .7rem; padding-right: .7rem;
+}
+
+/* ??????????????????????????????????????????????????????????
+   TEXT MEMORY CARD
+   ?????????????????????????????????????????????????????????? */
+.card--memory-text .memory__text {
+  font-family: Georgia, serif; font-style: italic;
+  font-size: 1.05rem; line-height: 1.65; color: var(--text);
+}
+.card--memory-text .memory__year {
+  display: inline-block; margin-top: .5rem;
+  font-size: .78rem; color: var(--text-muted); font-style: normal; font-family: var(--font-ui);
+}
+
+/* ??????????????????????????????????????????????????????????
+   THEN & NOW CARD
+   ?????????????????????????????????????????????????????????? */
+.card--thennow { padding: 0; overflow: hidden; }
+
+.thennow__split {
+  display: grid; grid-template-columns: 1fr 1fr;
+  min-height: 180px;
+}
+.thennow__half {
+  position: relative; overflow: hidden;
+}
+.thennow__half img {
+  width: 100%; height: 100%; object-fit: cover;
+  min-height: 160px;
+}
+.thennow__half--then { filter: sepia(.55) contrast(.95); }
+.thennow__half--now  { filter: saturate(1.1) hue-rotate(180deg) saturate(.55); }
+
+/* reset hue-rotate tint via overlay instead */
+.thennow__half--then { filter: none; }
+.thennow__half--then img { filter: sepia(.45) contrast(.9) brightness(.95); }
+.thennow__half--now  img { filter: none; }
+
+.thennow__overlay {
+  position: absolute; inset: 0;
+  pointer-events: none;
+}
+.thennow__half--then .thennow__overlay { background: rgba(200,169,126,.18); }
+.thennow__half--now  .thennow__overlay { background: rgba(126,181,200,.18); }
+
+.thennow__label {
+  position: absolute; bottom: .5rem; left: .5rem;
+  font-size: .72rem; font-weight: 700; letter-spacing: .05em; text-transform: uppercase;
+  padding: .2rem .5rem; border-radius: 999px;
+  color: #fff;
+}
+.thennow__half--then .thennow__label { background: rgba(160,120,60,.75); }
+.thennow__half--now  .thennow__label { background: rgba(60,100,160,.75); }
+
+.thennow__divider {
+  position: absolute; top: 0; left: 50%; transform: translateX(-50%);
+  width: 2px; height: 100%;
+  background: #fff;
+  pointer-events: none;
+  z-index: 1;
+}
+
+.thennow__info { padding: .75rem 1rem .25rem; }
+.thennow__name { font-weight: 600; font-size: .95rem; }
+.thennow__caption { font-size: .88rem; color: var(--text-muted); margin-top: .2rem; line-height: 1.5; }
+
+/* ??????????????????????????????????????????????????????????
+   PHOTO COLLECTION CARD
+   ?????????????????????????????????????????????????????????? */
+.card--collection .collection__stack {
+  position: relative; height: 180px; overflow: hidden;
+  background: var(--bg-subtle);
+}
+.collection__stack-img {
+  position: absolute; border-radius: 4px;
+  object-fit: cover; box-shadow: var(--shadow-sm);
+  cursor: pointer; transition: transform .25s;
+}
+.collection__stack-img:nth-child(1) {
+  width: 80%; height: 85%; top: 8%; left: 10%;
+  z-index: 3;
+}
+.collection__stack-img:nth-child(2) {
+  width: 72%; height: 76%; top: 5%; left: 5%;
+  transform: rotate(-5deg); z-index: 2; filter: brightness(.9);
+}
+.collection__stack-img:nth-child(3) {
+  width: 72%; height: 76%; top: 5%; right: 5%;
+  transform: rotate(4deg); z-index: 1; filter: brightness(.85);
+}
+.collection__stack:hover .collection__stack-img:nth-child(1) { transform: rotate(-2deg) translateY(-4px); }
+
+.collection__badge {
+  position: absolute; bottom: .5rem; right: .5rem; z-index: 4;
+  background: var(--purple); color: #fff;
+  font-size: .75rem; font-weight: 700;
+  padding: .2rem .5rem; border-radius: 999px;
+}
+
+.card--collection .collection__title { font-weight: 700; font-size: 1rem; margin-bottom: .2rem; }
+.card--collection .collection__meta  { font-size: .8rem; color: var(--text-muted); }
+
+/* ??????????????????????????????????????????????????????????
+   QUOTE CARD
+   ?????????????????????????????????????????????????????????? */
+.card--quote {
+  border-left: 4px solid var(--purple);
+  background: var(--bg-card);
+}
+.card--quote .quote__mark {
+  font-family: Georgia, serif; font-size: 4rem; line-height: .6;
+  color: var(--purple-light); display: block; margin-bottom: .25rem;
+  user-select: none;
+}
+.card--quote .quote__text {
+  font-family: Georgia, serif; font-style: italic;
+  font-size: 1.05rem; line-height: 1.65; color: var(--text);
+}
+.card--quote .quote__attribution {
+  display: block; margin-top: .6rem;
+  font-size: .82rem; color: var(--text-muted); font-style: normal;
+  font-family: var(--font-ui);
+}
+
+/* ??????????????????????????????????????????????????????????
+   CONFESSION CARD
+   ?????????????????????????????????????????????????????????? */
+.card--confession {
+  background: #1a1a2e; color: #e8e4ff;
+}
+.card--confession .card__body { padding-bottom: .75rem; }
+.card--confession .confession__icon {
+  font-size: 1.5rem; margin-bottom: .5rem; display: block;
+}
+.card--confession .confession__text {
+  font-size: .95rem; line-height: 1.65;
+}
+.card--confession .confession__tag {
+  display: inline-block; margin-top: .75rem;
+  font-size: .72rem; font-weight: 700; letter-spacing: .06em; text-transform: uppercase;
+  background: rgba(255,255,255,.1); color: rgba(255,255,255,.55);
+  padding: .2rem .6rem; border-radius: 999px;
+}
+/* confessions have no reaction footer */
+
+/* ??????????????????????????????????????????????????????????
+   REACTION PILLS
+   ?????????????????????????????????????????????????????????? */
+.reaction-pill {
+  display: inline-flex; align-items: center; gap: .3em;
+  padding: .28rem .7rem; border-radius: 999px;
+  font-size: .82rem; font-weight: 600;
+  border: 1.5px solid var(--purple);
+  color: var(--purple); background: transparent;
+  cursor: pointer;
+  transition: background var(--transition), color var(--transition), transform var(--transition);
+  user-select: none;
+}
+.reaction-pill:hover { background: var(--purple-light); }
+.reaction-pill.reacted {
+  background: var(--purple); color: #fff;
+}
+.reaction-pill:active { transform: scale(.94); }
+
+.reaction-pill .pill-count {
+  font-size: .78rem; opacity: .85;
+}
+
+/* dark card reactions */
+.card--confession .reaction-pill {
+  border-color: rgba(255,255,255,.3); color: rgba(255,255,255,.7);
+}
+.card--confession .reaction-pill.reacted {
+  background: rgba(255,255,255,.2); color: #fff; border-color: transparent;
+}
+
+/* ??????????????????????????????????????????????????????????
+   SUBMISSION SHEET
+   ?????????????????????????????????????????????????????????? */
+.overlay {
+  position: fixed; inset: 0; z-index: 200;
+  background: rgba(0,0,0,.45);
+  backdrop-filter: blur(3px);
+  display: flex; align-items: flex-end; justify-content: center;
+}
+
+.sheet {
+  background: var(--bg-card);
+  border-radius: var(--radius) var(--radius) 0 0;
+  width: 100%; max-width: 560px;
+  max-height: 92dvh;
+  overflow-y: auto;
+  padding: 0 0 2rem;
+  box-shadow: 0 -4px 40px rgba(0,0,0,.2);
+  animation: slideUp .28s ease;
+}
+@keyframes slideUp {
+  from { transform: translateY(100%); opacity: 0; }
+  to   { transform: translateY(0);    opacity: 1; }
+}
+
+.sheet__handle {
+  width: 40px; height: 4px; border-radius: 999px;
+  background: var(--border); margin: .75rem auto .25rem;
+}
+.sheet__header {
+  display: flex; align-items: center; justify-content: space-between;
+  padding: .5rem 1.25rem .25rem;
+  position: sticky; top: 0; background: var(--bg-card);
+  border-bottom: 1px solid var(--border); z-index: 1;
+}
+.sheet__title { font-family: var(--font-hand); font-size: 1.5rem; color: var(--purple); }
+.sheet__close {
+  width: 2rem; height: 2rem; border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  background: var(--bg-subtle); color: var(--text-muted); font-size: .9rem;
+  transition: background var(--transition);
+}
+.sheet__close:hover { background: var(--border); }
+
+.sheet__form { padding: 1.25rem; display: flex; flex-direction: column; gap: .9rem; }
+
+/* step indicator */
+.sheet__steps {
+  display: flex; gap: .5rem; align-items: center; margin-bottom: .25rem;
+}
+.sheet__step-dot {
+  width: 8px; height: 8px; border-radius: 50%;
+  background: var(--border); transition: background var(--transition);
+}
+.sheet__step-dot.active { background: var(--purple); }
+
+/* ?? Form elements ????????????????????????????????????????? */
+.form-label {
+  display: block; font-size: .85rem; font-weight: 600;
+  color: var(--text-muted); margin-bottom: .35rem;
+}
+.optional { font-weight: 400; }
+.form-input {
+  display: block; width: 100%;
+  padding: .65rem .9rem;
+  border: 1.5px solid var(--border); border-radius: var(--radius-sm);
+  font-size: .95rem; color: var(--text); background: var(--bg-card);
+  outline: none;
+  transition: border-color var(--transition);
+}
+.form-input:focus { border-color: var(--purple); }
+.form-textarea { resize: vertical; min-height: 100px; }
+
+/* ?? Type selector ????????????????????????????????????????? */
+.type-selector { border: none; }
+.type-selector__grid {
+  display: grid; grid-template-columns: repeat(5, 1fr); gap: .5rem; margin-top: .35rem;
+}
+.type-btn {
+  display: flex; cursor: pointer;
+}
+.type-btn input[type="radio"] { display: none; }
+.type-btn span {
+  flex: 1; text-align: center; padding: .55rem .2rem;
+  border-radius: var(--radius-sm); font-size: .78rem; line-height: 1.4; font-weight: 500;
+  border: 1.5px solid var(--border); color: var(--text-muted);
+  transition: all var(--transition);
+}
+.type-btn input:checked + span {
+  border-color: var(--purple); background: var(--purple-light); color: var(--purple);
+}
+.type-btn:hover span { border-color: var(--purple); }
+
+/* ?? Upload zone ??????????????????????????????????????????? */
+.upload-group { display: flex; flex-direction: column; }
+.upload-zone {
+  position: relative; border: 2px dashed var(--border);
+  border-radius: var(--radius-sm); min-height: 120px;
+  display: flex; align-items: center; justify-content: center;
+  flex-direction: column; gap: .5rem;
+  cursor: pointer; overflow: hidden;
+  transition: border-color var(--transition), background var(--transition);
+}
+.upload-zone:hover, .upload-zone.dragover {
+  border-color: var(--purple); background: var(--purple-light);
+}
+.upload-zone__input {
+  position: absolute; inset: 0; opacity: 0; cursor: pointer; width: 100%;
+}
+.upload-zone__text { font-size: .88rem; color: var(--text-muted); pointer-events: none; }
+.upload-zone__preview {
+  width: 100%; max-height: 240px; object-fit: cover; border-radius: 6px;
+}
+
+/* multi upload */
+.multi-upload-zone { min-height: 100px; }
+.multi-upload-thumbs {
+  display: flex; flex-wrap: wrap; gap: .4rem; margin-top: .5rem;
+}
+.multi-thumb {
+  position: relative; width: 72px; height: 72px; border-radius: 6px; overflow: hidden;
+  box-shadow: var(--shadow-sm);
+}
+.multi-thumb img { width: 100%; height: 100%; object-fit: cover; }
+.multi-thumb__remove {
+  position: absolute; top: 2px; right: 2px;
+  width: 18px; height: 18px; border-radius: 50%;
+  background: rgba(0,0,0,.55); color: #fff;
+  font-size: .6rem; display: flex; align-items: center; justify-content: center;
+  cursor: pointer;
+}
+
+/* then/now side-by-side upload */
+.thennow-uploads {
+  display: grid; grid-template-columns: 1fr 1fr; gap: .75rem;
+}
+
+/* ?? Toggle ???????????????????????????????????????????????? */
+.toggle-label {
+  display: flex; align-items: center; gap: .7rem; cursor: pointer;
+  padding: .3rem 0;
+}
+.toggle-input { display: none; }
+.toggle-track {
+  width: 42px; height: 24px; border-radius: 999px;
+  background: var(--border); position: relative;
+  flex-shrink: 0; transition: background var(--transition);
+}
+.toggle-input:checked ~ .toggle-track { background: var(--purple); }
+.toggle-thumb {
+  position: absolute; top: 3px; left: 3px;
+  width: 18px; height: 18px; border-radius: 50%; background: #fff;
+  box-shadow: var(--shadow-sm);
+  transition: transform var(--transition);
+}
+.toggle-input:checked ~ .toggle-track .toggle-thumb { transform: translateX(18px); }
+.toggle-text { font-size: .88rem; color: var(--text-muted); }
+
+.submit-error {
+  min-height: 1.1em; font-size: .85rem; color: var(--red);
+}
+
+/* submitting state */
+.sheet__form.submitting { pointer-events: none; opacity: .7; }
+
+/* ??????????????????????????????????????????????????????????
+   LIGHTBOX
+   ?????????????????????????????????????????????????????????? */
+.lightbox {
+  position: fixed; inset: 0; z-index: 500;
+  background: rgba(0,0,0,.9);
+  display: flex; flex-direction: column;
+  align-items: center; justify-content: center;
+  padding: 1rem;
+  animation: fadeIn .2s ease;
+}
+@keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+
+.lightbox__close {
+  position: absolute; top: 1rem; right: 1rem;
+  width: 2.5rem; height: 2.5rem; border-radius: 50%;
+  background: rgba(255,255,255,.15); color: #fff; font-size: 1rem;
+  display: flex; align-items: center; justify-content: center;
+  transition: background var(--transition);
+}
+.lightbox__close:hover { background: rgba(255,255,255,.3); }
+
+.lightbox__img {
+  max-width: 100%; max-height: 80dvh;
+  border-radius: var(--radius-sm);
+  object-fit: contain;
+  box-shadow: var(--shadow-lg);
+}
+.lightbox__caption {
+  margin-top: .9rem; color: rgba(255,255,255,.75);
+  font-size: .9rem; text-align: center; max-width: 500px; line-height: 1.55;
+}
+
+/* ??????????????????????????????????????????????????????????
+   FLOATING ADD BUTTON (mobile)
+   ?????????????????????????????????????????????????????????? */
+.fab {
+  position: fixed; bottom: 1.5rem; right: 1.25rem; z-index: 99;
+  width: 3.25rem; height: 3.25rem; border-radius: 50%;
+  background: var(--purple); color: #fff;
+  font-size: 1.6rem; font-weight: 300;
+  display: flex; align-items: center; justify-content: center;
+  box-shadow: 0 4px 20px rgba(83,74,183,.45);
+  transition: transform .2s, box-shadow .2s;
+}
+.fab:hover { transform: scale(1.08); box-shadow: 0 6px 28px rgba(83,74,183,.55); }
+.fab:active { transform: scale(.95); }
+
+/* hide FAB on desktop since nav button is visible */
+@media (min-width: 640px) { .fab { display: none; } }
+/* hide nav CTA on mobile */
+@media (max-width: 639px) { .nav__cta { display: none; } }
+
+/* ??????????????????????????????????????????????????????????
+   TOAST NOTIFICATIONS
+   ?????????????????????????????????????????????????????????? */
+.toast-container {
+  position: fixed; bottom: 5rem; left: 50%; transform: translateX(-50%);
+  z-index: 999; display: flex; flex-direction: column; gap: .5rem;
+  pointer-events: none;
+}
+.toast {
+  background: #1a1a2e; color: #fff;
+  padding: .65rem 1.25rem; border-radius: 999px;
+  font-size: .88rem; font-weight: 500;
+  box-shadow: var(--shadow-md);
+  animation: toastIn .25s ease, toastOut .3s ease 2.7s forwards;
+  white-space: nowrap;
+}
+.toast--error { background: var(--red); }
+.toast--success { background: #2e7d32; }
+@keyframes toastIn  { from { opacity:0; transform:translateY(12px); } to { opacity:1; transform:translateY(0); } }
+@keyframes toastOut { from { opacity:1; } to { opacity:0; pointer-events:none; } }
+
+/* ??????????????????????????????????????????????????????????
+   RESPONSIVE TWEAKS
+   ?????????????????????????????????????????????????????????? */
+@media (min-width: 640px) {
+  .sheet { border-radius: var(--radius); margin-bottom: 2rem; }
+  .overlay { align-items: center; }
+  .gate__card { padding: 3rem 2.5rem 2.5rem; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { animation-duration: .01ms !important; transition-duration: .01ms !important; }
+}

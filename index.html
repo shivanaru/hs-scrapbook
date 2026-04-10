@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Our High School Scrapbook</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Caveat:wght@400;600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="css/styles.css" />
+</head>
+<body>
+
+  <!-- ?? PASSWORD GATE ?? -->
+  <div id="gate" class="gate" role="dialog" aria-modal="true" aria-label="Password gate">
+    <div class="gate__card">
+      <div class="gate__tape gate__tape--left"></div>
+      <div class="gate__tape gate__tape--right"></div>
+      <h1 class="gate__title">Our Scrapbook ??</h1>
+      <p class="gate__subtitle">A private place for our crew.<br/>Enter the password to peek inside.</p>
+      <form id="gateForm" class="gate__form" novalidate>
+        <input
+          id="gatePassword"
+          type="password"
+          class="gate__input"
+          placeholder="password�"
+          autocomplete="current-password"
+          required
+        />
+        <button type="submit" class="btn btn--primary gate__btn">Open&nbsp;it&nbsp;up ?</button>
+      </form>
+      <p id="gateError" class="gate__error" aria-live="polite"></p>
+    </div>
+  </div>
+
+  <!-- ?? MAIN APP (hidden until authed) ?? -->
+  <div id="app" class="app" hidden>
+
+    <!-- NAV -->
+    <header class="nav">
+      <span class="nav__logo">?? Our Scrapbook</span>
+      <button id="openSubmit" class="btn btn--accent nav__cta" aria-haspopup="dialog">
+        + Add a Memory
+      </button>
+    </header>
+
+    <!-- HERO CAROUSEL -->
+    <section class="hero" aria-label="Featured memories">
+      <div id="carousel" class="carousel">
+        <div id="carouselTrack" class="carousel__track" role="list"></div>
+        <button class="carousel__arrow carousel__arrow--prev" id="carouselPrev" aria-label="Previous slide">&#8592;</button>
+        <button class="carousel__arrow carousel__arrow--next" id="carouselNext" aria-label="Next slide">&#8594;</button>
+        <div id="carouselDots" class="carousel__dots" role="tablist" aria-label="Slide indicators"></div>
+      </div>
+      <div id="carouselEmpty" class="carousel__empty" hidden>
+        <span>No featured posts yet � add one! ??</span>
+      </div>
+    </section>
+
+    <!-- FILTER BAR -->
+    <nav class="filters" aria-label="Filter posts">
+      <button class="filter-btn filter-btn--active" data-filter="all">All</button>
+      <button class="filter-btn" data-filter="photo">?? Photos</button>
+      <button class="filter-btn" data-filter="story">?? Stories</button>
+      <button class="filter-btn" data-filter="quote">?? Quotes</button>
+      <button class="filter-btn" data-filter="milestone">?? Milestones</button>
+    </nav>
+
+    <!-- POSTS GRID -->
+    <main id="postsGrid" class="grid" aria-label="Memory posts" aria-live="polite">
+      <div id="gridLoader" class="grid__loader">
+        <span class="spinner" aria-label="Loading�"></span>
+      </div>
+    </main>
+
+    <!-- EMPTY STATE -->
+    <div id="emptyState" class="empty-state" hidden>
+      <p>No memories here yet.<br/>Be the first to add one! ??</p>
+    </div>
+
+  </div><!-- /#app -->
+
+  <!-- ?? SUBMIT SHEET (slide-up panel) ?? -->
+  <div id="submitOverlay" class="overlay" hidden aria-hidden="true">
+    <div id="submitSheet" class="sheet" role="dialog" aria-modal="true" aria-label="Add a memory">
+      <div class="sheet__handle"></div>
+      <div class="sheet__header">
+        <h2 class="sheet__title">Add a Memory ?</h2>
+        <button id="closeSubmit" class="sheet__close" aria-label="Close">&#10005;</button>
+      </div>
+
+      <form id="submitForm" class="sheet__form" novalidate>
+
+        <!-- Type selector -->
+        <fieldset class="type-selector">
+          <legend class="form-label">What kind of memory?</legend>
+          <div class="type-selector__grid">
+            <label class="type-btn">
+              <input type="radio" name="postType" value="photo" checked />
+              <span>??<br/>Photo</span>
+            </label>
+            <label class="type-btn">
+              <input type="radio" name="postType" value="story" />
+              <span>??<br/>Story</span>
+            </label>
+            <label class="type-btn">
+              <input type="radio" name="postType" value="quote" />
+              <span>??<br/>Quote</span>
+            </label>
+            <label class="type-btn">
+              <input type="radio" name="postType" value="milestone" />
+              <span>??<br/>Milestone</span>
+            </label>
+          </div>
+        </fieldset>
+
+        <!-- Author -->
+        <label class="form-label" for="inputAuthor">Your name / nickname</label>
+        <input id="inputAuthor" type="text" class="form-input" placeholder="e.g. Jamie" maxlength="40" required />
+
+        <!-- Caption / text -->
+        <label class="form-label" for="inputCaption">Caption or story</label>
+        <textarea id="inputCaption" class="form-input form-textarea" placeholder="What's the memory?" maxlength="500" required></textarea>
+
+        <!-- Date (optional) -->
+        <label class="form-label" for="inputDate">Date <span class="optional">(optional)</span></label>
+        <input id="inputDate" type="date" class="form-input" />
+
+        <!-- Photo upload (shown for photo type only) -->
+        <div id="photoUploadGroup" class="upload-group">
+          <label class="form-label" for="inputPhoto">Photo</label>
+          <div class="upload-zone" id="uploadZone" role="button" tabindex="0" aria-label="Upload photo � click or drag and drop">
+            <input id="inputPhoto" type="file" class="upload-zone__input" accept="image/*" />
+            <span id="uploadZoneText" class="upload-zone__text">?? Click or drag &amp; drop a photo</span>
+            <img id="uploadPreview" class="upload-zone__preview" src="" alt="Preview" hidden />
+          </div>
+        </div>
+
+        <!-- Featured toggle -->
+        <label class="toggle-label">
+          <input id="inputFeatured" type="checkbox" class="toggle-input" />
+          <span class="toggle-track"><span class="toggle-thumb"></span></span>
+          <span class="toggle-text">Feature in hero carousel</span>
+        </label>
+
+        <p id="submitError" class="submit-error" aria-live="polite"></p>
+
+        <button type="submit" id="submitBtn" class="btn btn--primary btn--full">
+          Post Memory ??
+        </button>
+      </form>
+    </div>
+  </div>
+
+  <!-- ?? LIGHTBOX ?? -->
+  <div id="lightbox" class="lightbox" hidden aria-hidden="true" role="dialog" aria-modal="true" aria-label="Image lightbox">
+    <button class="lightbox__close" id="lightboxClose" aria-label="Close lightbox">&#10005;</button>
+    <img id="lightboxImg" class="lightbox__img" src="" alt="" />
+    <p id="lightboxCaption" class="lightbox__caption"></p>
+  </div>
+
+  <script type="module" src="js/app.js"></script>
+</body>
+</html>
