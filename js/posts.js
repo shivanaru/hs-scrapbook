@@ -80,14 +80,20 @@ export async function fetchPosts({ type = null, lastDoc = null } = {}) {
 /**
  * Fetch featured posts for the hero carousel:
  * posts where featured === true, limited to 10 most recent.
+ * Sorted client-side to avoid requiring a composite Firestore index.
  */
 export async function fetchFeaturedPosts() {
   const q = query(
     collection(db, POSTS_COL),
     where("featured", "==", true),
-    orderBy("createdAt", "desc"),
     limit(10)
   );
   const snap = await getDocs(q);
-  return snap.docs.map((d) => ({ id: d.id, ...d.data() }));
+  return snap.docs
+    .map((d) => ({ id: d.id, ...d.data() }))
+    .sort((a, b) => {
+      const ta = a.createdAt?.toMillis?.() ?? 0;
+      const tb = b.createdAt?.toMillis?.() ?? 0;
+      return tb - ta;
+    });
 }
