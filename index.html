@@ -18,7 +18,7 @@
       <div class="gate__tape gate__tape--right"></div>
       <h1 class="gate__title">Our Scrapbook ??</h1>
       <p class="gate__subtitle">A private place for our crew.<br/>Enter the password to peek inside.</p>
-      <form id="gateForm" class="gate__form" action="#" novalidate>
+      <form id="gateForm" class="gate__form" novalidate>
         <input
           id="gatePassword"
           type="password"
@@ -60,10 +60,11 @@
     <!-- FILTER BAR -->
     <nav class="filters" aria-label="Filter posts">
       <button class="filter-btn filter-btn--active" data-filter="all">All</button>
-      <button class="filter-btn" data-filter="photo">?? Photos</button>
-      <button class="filter-btn" data-filter="story">?? Stories</button>
-      <button class="filter-btn" data-filter="quote">?? Quotes</button>
-      <button class="filter-btn" data-filter="milestone">?? Milestones</button>
+      <button class="filter-btn" data-filter="memory">📸 Memories</button>
+      <button class="filter-btn" data-filter="thennow">🔄 Then &amp; Now</button>
+      <button class="filter-btn" data-filter="collection">🗂️ Collections</button>
+      <button class="filter-btn" data-filter="quote">💬 Quotes</button>
+      <button class="filter-btn" data-filter="confession">🤫 Confessions</button>
     </nav>
 
     <!-- POSTS GRID -->
@@ -96,20 +97,24 @@
           <legend class="form-label">What kind of memory?</legend>
           <div class="type-selector__grid">
             <label class="type-btn">
-              <input type="radio" name="postType" value="photo" checked />
-              <span>??<br/>Photo</span>
+              <input type="radio" name="postType" value="memory" checked />
+              <span>📸<br/>Memory</span>
             </label>
             <label class="type-btn">
-              <input type="radio" name="postType" value="story" />
-              <span>??<br/>Story</span>
+              <input type="radio" name="postType" value="thennow" />
+              <span>🔄<br/>Then &amp; Now</span>
+            </label>
+            <label class="type-btn">
+              <input type="radio" name="postType" value="collection" />
+              <span>🗂️<br/>Collection</span>
             </label>
             <label class="type-btn">
               <input type="radio" name="postType" value="quote" />
-              <span>??<br/>Quote</span>
+              <span>💬<br/>Quote</span>
             </label>
             <label class="type-btn">
-              <input type="radio" name="postType" value="milestone" />
-              <span>??<br/>Milestone</span>
+              <input type="radio" name="postType" value="confession" />
+              <span>🤫<br/>Confession</span>
             </label>
           </div>
         </fieldset>
