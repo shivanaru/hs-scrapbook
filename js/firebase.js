@@ -13,7 +13,7 @@ const firebaseConfig = {
     apiKey: "AIzaSyA3CMq-BAj6ksY_LA9_Mn4NCWe5H8EjwdA",
     authDomain: "hs-scrapbook.firebaseapp.com",
     projectId: "hs-scrapbook",
-    storageBucket: "hs-scrapbook.firebasestorage.app",
+  storageBucket: "hs-scrapbook.appspot.com",
     messagingSenderId: "879494477519",
     appId: "1:879494477519:web:c7c06f452d1ea98a97a9ba"
 };
