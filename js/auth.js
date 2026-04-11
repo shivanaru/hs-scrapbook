@@ -59,7 +59,7 @@ export function initAuth({ onSuccess }) {
 const gate = document.getElementById("gate");
 
 if (isAuthed()) {
-  gate.hidden = true;
+  gate.classList.remove("gate--visible");
   onSuccess();
   return;
 }
@@ -95,7 +95,8 @@ if (isAuthed()) {
         gate.style.transition = "opacity .4s ease";
         gate.style.opacity = "0";
         setTimeout(() => {
-          gate.hidden = true;
+          gate.classList.remove("gate--visible");
+          gate.style.opacity = "";
           onSuccess();
         }, 400);
       } else {
