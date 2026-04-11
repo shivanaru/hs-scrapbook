@@ -10,6 +10,9 @@
     padding: 0;
 }
 
+/* Ensure [hidden] always wins over any display property */
+[hidden] { display: none !important; }
+
 :root {
     --bg: #faf9f6;
     --bg-card: #ffffff;
