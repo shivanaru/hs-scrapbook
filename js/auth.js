@@ -67,8 +67,14 @@ export function initAuth({ onSuccess }) {
   const errorEl   = document.getElementById("gateError");
   const submitBtn = form.querySelector("button[type='submit']");
 
+  // Confirm the listener is actually being attached
+  console.log("[auth] initAuth: attaching submit listener");
+
   form.addEventListener("submit", async (e) => {
     e.preventDefault();
+    e.stopImmediatePropagation();
+    console.log("[auth] submit fired");
+
     errorEl.textContent = "";
     const val = input.value.trim();
     if (!val) {
@@ -80,9 +86,10 @@ export function initAuth({ onSuccess }) {
     submitBtn.textContent = "Checking…";
 
     try {
+      console.log("[auth] calling checkPassword");
       const ok = await checkPassword(val);
+      console.log("[auth] checkPassword result:", ok);
       if (ok) {
-        // Animate gate away
         gate.style.transition = "opacity .4s ease";
         gate.style.opacity = "0";
         setTimeout(() => {
@@ -95,11 +102,11 @@ export function initAuth({ onSuccess }) {
         input.focus();
       }
     } catch (err) {
-      console.error("Auth error:", err);
-      errorEl.textContent = "Connection error. Check your internet and try again.";
+      console.error("[auth] Auth error:", err);
+      errorEl.textContent = "Error: " + err.message;
     } finally {
       submitBtn.disabled = false;
-      submitBtn.textContent = "Open\u00a0it\u00a0up ?";
+      submitBtn.textContent = "Open\u00a0it\u00a0up ??";
     }
   });
 }

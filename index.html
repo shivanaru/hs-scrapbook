@@ -164,19 +164,6 @@
     <p id="lightboxCaption" class="lightbox__caption"></p>
   </div>
 
-  <script>
-    // Hard fallback: block native form submit unconditionally before module loads
-    document.getElementById('gateForm').addEventListener('submit', function(e) {
-      e.preventDefault();
-    });
-    // Surface any module errors visibly
-    window.addEventListener('error', function(e) {
-      document.getElementById('gateError').textContent = 'JS error: ' + e.message;
-    });
-    window.addEventListener('unhandledrejection', function(e) {
-      document.getElementById('gateError').textContent = 'JS error: ' + (e.reason?.message || e.reason);
-    });
-  </script>
   <script type="module" src="js/app.js"></script>
 </body>
 </html>
