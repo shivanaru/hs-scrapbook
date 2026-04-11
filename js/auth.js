@@ -56,12 +56,14 @@ export async function checkPassword(input) {
  * Calls onSuccess() when the correct password is entered (or already authed).
  */
 export function initAuth({ onSuccess }) {
-  if (isAuthed()) {
-    onSuccess();
-    return;
-  }
+const gate = document.getElementById("gate");
 
-  const gate      = document.getElementById("gate");
+if (isAuthed()) {
+  gate.hidden = true;
+  onSuccess();
+  return;
+}
+
   const form      = document.getElementById("gateForm");
   const input     = document.getElementById("gatePassword");
   const errorEl   = document.getElementById("gateError");
