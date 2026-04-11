@@ -37,43 +37,33 @@ export async function addPost(data) {
  * Returns { posts: Array, lastDoc: QueryDocumentSnapshot|null }
  */
 export async function fetchPosts({ type = null, lastDoc = null } = {}) {
-  let q = query(
-    collection(db, POSTS_COL),
-    orderBy("createdAt", "desc"),
-    limit(PAGE_SIZE)
-  );
+  let q;
 
   if (type && type !== "all") {
-    q = query(
-      collection(db, POSTS_COL),
-      where("type", "==", type),
-      orderBy("createdAt", "desc"),
-      limit(PAGE_SIZE)
-    );
-  }
-
-  if (lastDoc) {
-    if (type && type !== "all") {
-      q = query(
-        collection(db, POSTS_COL),
-        where("type", "==", type),
-        orderBy("createdAt", "desc"),
-        startAfter(lastDoc),
-        limit(PAGE_SIZE)
-      );
-    } else {
-      q = query(
-        collection(db, POSTS_COL),
-        orderBy("createdAt", "desc"),
-        startAfter(lastDoc),
-        limit(PAGE_SIZE)
-      );
-    }
+    // where + orderBy requires a composite index, so filter only and sort client-side
+    q = lastDoc
+      ? query(collection(db, POSTS_COL), where("type", "==", type), startAfter(lastDoc), limit(PAGE_SIZE))
+      : query(collection(db, POSTS_COL), where("type", "==", type), limit(PAGE_SIZE));
+  } else {
+    // no where clause — orderBy alone needs no composite index
+    q = lastDoc
+      ? query(collection(db, POSTS_COL), orderBy("createdAt", "desc"), startAfter(lastDoc), limit(PAGE_SIZE))
+      : query(collection(db, POSTS_COL), orderBy("createdAt", "desc"), limit(PAGE_SIZE));
   }
 
   const snap = await getDocs(q);
-  const posts = snap.docs.map((d) => ({ id: d.id, ...d.data() }));
-  const last  = snap.docs.length === PAGE_SIZE ? snap.docs[snap.docs.length - 1] : null;
+  let posts = snap.docs.map((d) => ({ id: d.id, ...d.data() }));
+
+  // Sort client-side for type-filtered queries (avoids composite index requirement)
+  if (type && type !== "all") {
+    posts.sort((a, b) => {
+      const ta = a.createdAt?.toMillis?.() ?? 0;
+      const tb = b.createdAt?.toMillis?.() ?? 0;
+      return tb - ta;
+    });
+  }
+
+  const last = snap.docs.length === PAGE_SIZE ? snap.docs[snap.docs.length - 1] : null;
   return { posts, lastDoc: last };
 }
 
