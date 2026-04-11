@@ -298,6 +298,7 @@ function updateFormForType(type) {
 // ?????????????????????????????????????????????????????????
 function openSheet() {
   overlayEl.removeAttribute("hidden");
+  overlayEl.classList.add("overlay--visible");
   overlayEl.setAttribute("aria-hidden", "false");
   document.body.style.overflow = "hidden";
   setTimeout(() => authorEl.focus(), 50);
@@ -305,6 +306,7 @@ function openSheet() {
 
 function closeSheet() {
   overlayEl.setAttribute("hidden", "");
+  overlayEl.classList.remove("overlay--visible");
   overlayEl.setAttribute("aria-hidden", "true");
   document.body.style.overflow = "";
   resetForm();
