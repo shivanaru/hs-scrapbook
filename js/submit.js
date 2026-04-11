@@ -297,7 +297,7 @@ function updateFormForType(type) {
 //  Open / close sheet
 // ?????????????????????????????????????????????????????????
 function openSheet() {
-  overlayEl.hidden = false;
+  overlayEl.classList.add("overlay--visible");
   overlayEl.setAttribute("aria-hidden", "false");
   document.body.style.overflow = "hidden";
   // focus first input
@@ -305,7 +305,7 @@ function openSheet() {
 }
 
 function closeSheet() {
-  overlayEl.hidden = true;
+  overlayEl.classList.remove("overlay--visible");
   overlayEl.setAttribute("aria-hidden", "true");
   document.body.style.overflow = "";
   resetForm();

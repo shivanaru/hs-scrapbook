@@ -933,7 +933,7 @@ a {
     justify-content: center;
 }
 
-.overlay:not([hidden]) {
+.overlay--visible {
     display: flex;
 }
 
@@ -1275,12 +1275,16 @@ a {
     inset: 0;
     z-index: 500;
     background: rgba(0,0,0,.9);
-    display: flex;
+    display: none;
     flex-direction: column;
     align-items: center;
     justify-content: center;
     padding: 1rem;
     animation: fadeIn .2s ease;
+}
+
+.lightbox--visible {
+    display: flex;
 }
 
 @keyframes fadeIn {
