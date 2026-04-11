@@ -297,15 +297,14 @@ function updateFormForType(type) {
 //  Open / close sheet
 // ?????????????????????????????????????????????????????????
 function openSheet() {
-  overlayEl.classList.add("overlay--visible");
+  overlayEl.removeAttribute("hidden");
   overlayEl.setAttribute("aria-hidden", "false");
   document.body.style.overflow = "hidden";
-  // focus first input
   setTimeout(() => authorEl.focus(), 50);
 }
 
 function closeSheet() {
-  overlayEl.classList.remove("overlay--visible");
+  overlayEl.setAttribute("hidden", "");
   overlayEl.setAttribute("aria-hidden", "true");
   document.body.style.overflow = "";
   resetForm();

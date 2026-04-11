@@ -203,7 +203,7 @@ function initLightbox() {
   const closeBtn = document.getElementById("lightboxClose");
 
   function closeLightbox() {
-    lb.classList.remove("lightbox--visible");
+    lb.setAttribute("hidden", "");
     lb.setAttribute("aria-hidden", "true");
     document.body.style.overflow = "";
     document.getElementById("lightboxImg").src = "";

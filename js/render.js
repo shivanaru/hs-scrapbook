@@ -32,7 +32,7 @@ function openLightbox(url, caption) {
   img.src         = url;
   img.alt         = caption || "";
   cap.textContent = caption || "";
-  lb.classList.add("lightbox--visible");
+  lb.removeAttribute("hidden");
   lb.setAttribute("aria-hidden", "false");
   document.body.style.overflow = "hidden";
 }
